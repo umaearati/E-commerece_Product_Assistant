@@ -2,7 +2,8 @@ import importlib.metadata
 packages = [
     "langchain-core",
     "langchain",
-    "langchain-openai"
+    "langchain-openai",
+    "streamlit"
     ]
 for pkg in packages:
     try:
