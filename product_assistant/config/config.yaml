@@ -1,0 +1,34 @@
+astra_db:
+  collection_name: "ecommerce_products_assistant"
+
+# embedding_model:
+#   provider: "google"
+#   model_name: "models/text-embedding-004"
+
+embedding_model:
+  provider: "openai"
+  model_name: "text-embedding-3-small"
+  # If you want higher quality:
+  # model_name: "text-embedding-3-large"
+
+retriever:
+  top_k: 4
+
+llm:
+  groq:
+    provider: "groq"
+    model_name: "deepseek-r1-distill-llama-70b"
+    temperature: 0
+    max_output_tokens: 2048
+
+  google:
+    provider: "google"
+    model_name: "gemini-2.0-flash"
+    temperature: 0
+    max_output_tokens: 2048
+
+  openai:
+    provider: "openai"
+    model_name: "gpt-4-turbo"
+    temperature: 0
+    max_output_tokens: 2048
