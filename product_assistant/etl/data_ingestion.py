@@ -142,7 +142,7 @@ class DataIngestion:
         if not vstore:
             return
 
-        query = "Can you tell me the low budget iphone?"
+        query = "Can you tell me the low budget samsung?"
         results = vstore.similarity_search(query)
         print(f"\nSample search results for query: '{query}'")
         for res in results:
