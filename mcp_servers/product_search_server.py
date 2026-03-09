@@ -1,6 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 from product_assistant.retriever.retrieval import Retriever  
 from langchain_community.tools import DuckDuckGoSearchRun
+import os
 
 # Initialize MCP server
 mcp = FastMCP("hybrid_search")
@@ -50,51 +51,9 @@ async def web_search(query: str) -> str:
     except Exception as e:
         return f"Error during web search: {str(e)}"
 
-# ---------- Run Server ----------
+
 if __name__ == "__main__":
-    
-    mcp.run(transport="streamable-http")
-    # mcp.run(transport="stdio")
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    # lsof -i :8000
-    # kill -9 <PID> 
+    import uvicorn
+    app = mcp.streamable_http_app()
+    uvicorn.run(app, host="0.0.0.0", port=9000)
+

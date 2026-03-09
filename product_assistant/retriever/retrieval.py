@@ -208,7 +208,7 @@ class Retriever:
                 search_type="similarity_score_threshold",
                 search_kwargs={
                     "k": 3,
-                    "score_threshold": 0.8
+                    "score_threshold": 0.5
                 }
             )
 
