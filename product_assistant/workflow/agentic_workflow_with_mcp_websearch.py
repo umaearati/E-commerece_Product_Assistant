@@ -59,21 +59,40 @@ class AgenticRAG:
             print(f"Warning: Failed to load MCP tools — {e}")
             self.mcp_tools = []
 
-    # ---------- Nodes ----------
+    # # ---------- Nodes ----------
+    # def _ai_assistant(self, state: AgentState):
+    #     print("--- CALL ASSISTANT ---")
+    #     messages = state["messages"]
+    #     last_message = messages[-1].content
+
+    #     if any(word in last_message.lower() for word in ["price", "review", "product"]):
+    #         return {"messages": [HumanMessage(content="TOOL: retriever")]}
+    #     else:
+    #         prompt = ChatPromptTemplate.from_template(
+    #             "You are a helpful assistant. Answer the user directly.\n\nQuestion: {question}\nAnswer:"
+    #         )
+    #         chain = prompt | self.llm | StrOutputParser()
+    #         response = chain.invoke({"question": last_message}) or "I'm not sure about that."
+    #         return {"messages": [HumanMessage(content=response)]}
     def _ai_assistant(self, state: AgentState):
         print("--- CALL ASSISTANT ---")
         messages = state["messages"]
         last_message = messages[-1].content
 
-        if any(word in last_message.lower() for word in ["price", "review", "product"]):
-            return {"messages": [HumanMessage(content="TOOL: retriever")]}
-        else:
+        # only skip retriever for greetings/small talk
+        small_talk = ["hi", "hello", "hey", "thanks", "bye", "thank you"]
+    
+        if last_message.lower().strip() in small_talk:
             prompt = ChatPromptTemplate.from_template(
-                "You are a helpful assistant. Answer the user directly.\n\nQuestion: {question}\nAnswer:"
+            "You are a helpful assistant. Answer the user directly.\n\nQuestion: {question}\nAnswer:"
             )
             chain = prompt | self.llm | StrOutputParser()
             response = chain.invoke({"question": last_message}) or "I'm not sure about that."
             return {"messages": [HumanMessage(content=response)]}
+    
+        else:
+            # everything else → retriever → grader → websearch if needed
+            return {"messages": [HumanMessage(content="TOOL: retriever")]}
 
     async def _vector_retriever(self, state: AgentState):
         print("--- RETRIEVER (MCP) ---")
