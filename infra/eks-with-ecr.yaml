@@ -10,7 +10,7 @@ Parameters:
     Default: t3.medium
   DesiredCapacity:
     Type: Number
-    Default: 2
+    Default: 1
   ECRRepositoryName:
     Type: String
     Default: product_assistant
